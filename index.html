@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prognoza FV</title>
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIlByb2dub3phIEZWIiwgInNob3J0X25hbWUiOiAiUHJvZ25vemEgRlYiLCAic3RhcnRfdXJsIjogIi4vIiwgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNGQUY3RjIiLCAidGhlbWVfY29sb3IiOiAiI0I1NzYwQSIsICJpY29ucyI6IFt7InNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQU1BQUFBREFDQUlBQUFEZHZ2dFFBQUFGTWtsRVFWUjRuTzNkd1hYYlNCUkUwUzhmcnhTYW9uQUVYam9RUitBa3BQaTh3TEdPVElJZzJBWHlWelhmWGMyczBQMzdFUUkxSFBIbC9kZHJBYU8rZFM4QTJRZ0lFZ0tDaElBZ0lTQklDQWdTQW9LRWdDQWhJRWdJQ0JJQ2dvU0FJQ0VnU0FnSUVnS0NoSUFnSVNCSXZuY3Z3TmZiajUrZi8veng1M2ZqU3B4eEIxcjN0Wjd6ZjhVbkFscXhtZ3NOclNLZ1V4dWgwTkE1QW9LRWdDQWhJRWdJNkFhOG1UOUhRSkFRRUNRRUJBa0JRVUpBa0JBUUpBUUVDUUZCUWtDUUVCQWtCQVFKQVVGQ1FKQTBmNmllRDY2UDhabGI1eDJJRDY2UHNacGJXMEI4Y0gyTTI5eDZBdUtENjJNTTUrYjRFRTFEcXp6SDRoaFF1UTZya2UxQVRBTXE0NUU5bnZNb2VnTGErYzdUZVhBUHMzTUlYVy9tWHhxLzdzbDhOQTc4UjlUNUk0ejcwRGIvZXFyOUdZaUdMb21vcDlvREtocGFrMUpQT1FSVU5QUy9vSHJLSktDaW9YK3k2aW1mZ0lxR0F1c3BxNERxdVJ0S3JLZmNBcXBuYlNpMG5qSU1xSjZ2b2R4NnF2YzMwZHRheHJybm9vKy80dUVYUFpCdlFMVmp1UHBZOWR2WUE5WmdXMCtaQjFTYncxWEdlbzhmZjNkYWozTTk1UjlRWFJqdThGanYvZVIwN01MTTY2bUlnT3BzdUdOamZlUkQ5eUVyOUsrblVnS3FMOE1kR0d2WCt6VmxxUkgxbE9mYitGWExRSVBxR2J2MDhEYTd4TnlCQnZqOG9pZ29pRnZGM0lGdTVWTlBtUzNtV0hNR1pIaGdoa3M2eElRQjJSNlY3Y0lVc3dWa2Zram15eHN3VlVBUnh4T3h5UDNtQ1Nqb1lJS1dldFVrQWNVZFNkeUNMNWtob05ERENGMzJpZmlBb284aGV2R0wrSURRS3p1Z0NWN0I2VnNJRGloOTlKK2lOeEljRUJ5a0JoVDlxajJYdTUzVWdHQWlNcURjMSt1RzBFMUZCZ1FmZVFHRnZsTDNTTnhhWGtDd1FrQ1FoQVdVZUpPL1Nkd0d3d0tDR3dLQ2hJQWdJU0JJa2dLS2U4QWNrN1ZOOVR0VGZiNjhFL3NkZUdwU1FJZC9lU2NKN25Ic0xlcnR4MDlsN09NL3dyTHV0TmlnSE9WZ1FOUXptZUVEVFhxSWhpRUNnb1NBSUJrTWlMZExreGsrMFBFN0VBMU5vK2R0dkhoaG1PajhSYUorZVF5d21ublNRN1RWNE80bmE1dEpBY0VRQVVGQ1FKQVFFQ1JoQVdVOVlBNkkyMkJZUUhCRFFKRGtCUlIzazk4dmNXdDVBY0ZLWkVDSnI5U3JRamNWR1JCOHBBWVUrbnE5SkhjN3FRSEJSSEJBdWEvYUU5RWJDUTZvd2tlL1NOOUNka0JvRng5UTlDczRldkdMK0lBcTloaENsMzFpaG9BcThERGlGbnpKSkFGVjFKRUVMZldxZVFLcWtJT0pXT1IrVXdWVTlzZGp2cndCc3dWVXhvZGt1ekRGaEFHVjVWRVpMdWtRY3daVVpnZG10WmhqSlFWMDYxL1Irdmp6dS8za0J0YVE5ZGZmWWdKYXhqb3czTWFHQmk0OXZNMHVMKysvWHJ2WGNOM0pRTWVhZU9TcEhMTEM5dHZuSGdFQnJSNzg4SER2bmRHeEMvTnZ5RDJnamZOV2hudVBqTzYwSHZPR3JBTzZlc3o2Y0IzK09Qb0R0bmsvdmdIdFBOcGpoN3Zub28rLzR1RVhQWkJwUU9sanZVbjBaaDNmeGtjUGRNRE9qWGkrdDdjTDZObnFXZVEyNUJYUWM5YXpDRzNJS0tCbnJtZVIySkJMUU5TemlHdklJaURxK1Nxcm9mNkFxT2RjVUVQTkFWSFBKU2tOZFFaRVBkc2lHbXI3VGJSelBWYi9hZE41VU5WMUJ6SWZpaFh6KzFEL1EvUWwxUFBKZVJTbUFUbVBySVh0UUJ3RHNoMVdMOCt4OUFTME1RdlBNWmt3bkZ2YkhXaDF3OVJ6bGR2Y09uK0VuV3liZW5heW1wdjZuYWtpb2huak16ZkhoMmdFSVNCSUNBZ1NBb0tFZ0NBaElFZ0lDQklDZ29TQUlDRWdTQWdJRWdLQ2hJQWdJYUJUN2YrblZSWUNnb1NBSUNFZ1NBam9sT0VIMTUwUjBBcTNENjQ3STZCMVZoOWNkMmI2WjM2Umdqc1FKQVFFQ1FGQlFrQ1FFQkFrQkFRSkFVRkNRSkFRRUNRRUJBa0JRVUpBa0JBUUpBUUVDUUZCUWtDUUVCQWtmd0ZiVVA2QWVWTjk3Z0FBQUFCSlJVNUVya0pnZ2c9PSIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIn0sIHsic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBZ0FBQUFJQUNBSUFBQUI3R2tPdEFBQVBKRWxFUVZSNG5PM2RRWExiU0JLR1VXckNLeC9OcC9BSnRQUkJmQUpmUWo3ZkxOVEJWb3NTQlFJRklDdi85NVk5SFJNZ3Fpby9nSXhRUDczOCtuNEJJTS8venI0QUFNNGhBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVFTQUlCUUFnQVFTZ0FBUW4wNyt3TGdCRDkrUHIvN0ozLy8vRDdsU3VCRVR5Ky92cDk5RFhDUTI3bC9Td25JNFNzZ1VpeVovc3YvTldqQUd3RDlyWnZwWGdWb3p4c0F6YTErb3ZjcVFIc0NBQkJLQU9oczQxTzhsd0I2RXdEYUdqSytOWURHQkFBZ2xBQUFoQklBZWhyNDFZMXZnZWhLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQU1BWC9GVTR1aElBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FBQkNDUUJBS0FFQUNDVUFBS0VFQUNDVUFBQ0VFZ0NBVUFJQUVFb0FBRUlKQUVBb0FRQUlKUUFBb1FRQUlKUUFBSVQ2ZHZZRnRQWGo1L083Zi9MM3orOVRyZ1RtNHV3Y1JnQUd1OTI3dC8rVDNReTNuSjNqK1Fwb3BEczdlTVcvQmptY25WTjRBeGpqMFgzNSt1OTduQUZuNTBUZUFBWlkvVlRpY1lad3pzNjVCQUFnbEFCc3RmRkp4SU1Nc1p5ZDB3bkFKa08yb0gxTUlHZW5BZ0VBQ0NVQUpYaVFJWW9OWDRRQXJEZDJFenNTaEhCdzZoQ0FRbXhsMnJQSlN4R0FXaHdQR3JPOXF4R0FjaHdTV3JLeEN4S0FpaHdWbXJHbGF4S0FvaHdZMnJDWnl4S0E5ZmIrYzFTT0RRM3N2WTM5VmJndEJLQTBEV0JxTm5CeC9oeDBkVDkrUG52R1djRk5PNTNwWDU4M2dFMk9tVElPRXRNNVp0UEsvRVlDc0pVR3dEdW0veXdFWUJvYXdCUnMxSWtJd0FDSFBZazRXaFIzMkJiMStEL0UwOHV2NzJkZlF4L2VmRWxtLzAvSEc4QklmZzhnbHVrL0kyOEF1empnTURnSjFHSERUOG9id0M0TzJLemVBeWpDOUorWEFPeEZBMGhnK2s5TkFIYWtBZlJtK3M5T0FQYWxBWFJsK2pjZ0FMdlRBUG94L1hzUWdDTm9BSjJZL20wSXdFRTBnQjVNLzA0RTREZ2F3T3hNLzJZRTRGQWF3THhNLzM0RTRHZ2F3SXhNLzVZRTRBUWF3RnhNLzY0RTRCd2F3Q3hNLzhZRTREUWFRSDJtZjI4Q2NDWU5vRExUdnowQk9Ka0dVSlBwbjBBQXpxY0JWR1A2aHhDQUVqU0FPa3ovSEFKUWhRWlFnZWtmUlFBSzBRRE9aZnFuRVlCYU5JQ3ptUDZCQktBY0RlQjRwbjhtQWFoSUF6aVM2Ui9yNmVYWDk3T3ZnWTg1bGtOc3VZM3V6eEFKdDNGU0FsRGFyb2V6MzdFODVyWEdmWHRJdjl2VmlRQlV0OVBoN0hFc0szeVI1VTdlMGVQbU5DWUFFeGgrT09jOWxoVW0vbjN1N2RXOHR5S0hBTXhoNE9HYzhWalduL3Uzd3UvempCOC9rQUJNWThqaG5PdFl6amozYndYZTg3aytjaklCbU1uR3d6bkxzZXd4OTIrRjNQOVpQaVlYQVpqTzZzTTV4YkhzT3ZyZjZyMFFVM3c2cmdSZ1Bpc09aL0ZqbVREM2IvVmJsT0tmaUZzQ01LV0hEbWZsWTVrNSt0OXFzenFWUHdpZkVZQlpMVHljWlkrbDBmL1c3TXRVOXZxNVR3QW05dVhockhrc2pmN1BUTHBlTlMrYkpRUmdibmNPWjhGamFmUXZNZGZDRmJ4YWxoT0E2WDE0T0tzZFM2UC9VVk9zWUxXTDVGRUMwTUc3dzFucVdCcjlXMVJleWxMWHhqcitld0FkdkQyS3BZNmw2YjlScVJ0WWRwdXhtamVBUG43OGZLNXpMRXROcmdaS3JXeWRpMkVqQVdBODAzOFB4aTdEQ1FBakdmMTdrd0VHOGhzQXc1aitCM0NUR1VnQUdNTmdPb3hielNpK0FtSXI4K2dzdmc1aUkyOEFiR0w2bjhqTlp5TUJZRDBENkhTV2dDMEVnSldNbmlJc0JLdjVEWUNIbVRnMStVbUFSM2tENERHbWYxbVdoa2NKQUE4d1lvcXpRRHhFQUZqS2NKbUNaV0k1QVdBUlkyVWlGb3VGQklDdkdTalRzV1FzSVFCOHdTaVpsSVhqU3dMQVBZYkkxQ3dmOXdrQW56SStHckNJM0NFQWZNemdhTU5TOGhrQjRBTkdSak1XbEE4SkFFQW9BZUE5VDRzdFdWWnVDUUQvWVV3MFpuRjVSd0Q0bHdIUm5pWG1MUUhnSDBaRENBdk5sUUFBaEJJQUxoZFBoV0VzTjY4RUFPTWdrVVhuSWdBWUJMRXNQUUlBRUVvQW9ua0dER2NEaEJPQVhBNC9GOXNnbXdBQWhCS0FVSjc3dUxJWllnbEFJZ2VlZDJ5SlRBSUFFRW9BNG5qVzQwTTJSaUFCQUFnbEFGazg1WEdIN1pGR0FBQkNDVUFRejNkOHlTYUpJZ0FBb1FRZ2hTYzdGckpWY2dnQVFDZ0JpT0Naam9mWU1DRUVBQ0NVQVBUbmFZNFZiSnNFQWdBUVNnQUFRZ2xBYzE3a1djM21hVThBQUVJSlFHZWU0TmpJRnVwTkFBQkNDUUJBS0FGb3k4czdROWhJalFrQVFDZ0JBQWdsQUQxNWJXY2cyNmtyQVFBSUpRQUFvUVNnSVMvc0RHZFR0U1FBQUtFRUFDQ1VBQUNFRWdDQVVBTFFqUi9yMkltdDFZOEFBSVFTQUlCUUFnQVFTZ0FBUWdsQUszNm1ZMWMyV0RNQ0FCQktBQUJDQ1FCQXFHOW5YOEJqYnIrQy9Qdm45eWxYQWpEN1JKb2pBSGQrZXBydVY2bTU5Z2NjYWJyamZPdjZFYVk0NlJOOEJkUmdUd0JwcGhoY3BRUHc0K2Z6RkRleENQZUtBOWhteTlXZllIVURVUHpHQVN4UmVaVFZEUUFBdXlvYWdNck5CSGhJMllGV01RQmxieGJBT2pYSFdzVUFBSEFBQVFBSVZTNEFOVitVQURZcU9OektCUUNBWXdnQVFDZ0JBQWdsQUFDaEJBQWdWTGtBVFBFM1ZBRWVWWEM0bFFzQUFNY1FBSUJRRlFOUThFVUpZSXVhWTYxaUFDNVZieGJBQ21VSFd0RUFBTEMzdWdFbzIweUE1U3FQc3JvQnVGd3VmLy84cm56dnFuR3ZPSUJ0dGx6OUNWWTZBSytLMzBHQVcxTU1ybTluWDhBaTExdFo4TytwQWx4Tk1mZXY1Z2pBMVZ3M0YzaUlBMzZ3Q2I0Q0FtQVBBZ0FRU2dBQVFnbEFLNzVDWlZjMldETUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQTNmaVpqcDNZV3YwSUFFQW9BUUFJSlFBQW9RUUFJSlFBTk9USE9vYXpxVm9TQUlCUUFnQVFTZ0I2OHNMT1FMWlRWd0lBRUVvQUFFSUpRRnRlMnhuQ1JtcE1BQUJDQ1FCQUtBSG96TXM3RzlsQ3ZRa0FRQ2dCYU00VEhLdlpQTzBKQUVBb0FRQUlKUUQ5ZVpGbkJkc21nUUFBaEJLQUNKN21lSWdORTBJQUFFSUpRQXJQZEN4a3ErUVFBSUJRQWhERWt4MWZza21pQ0FCQUtBSEk0dm1PTzJ5UE5BSUFFRW9BNG5qSzQwTTJSaUFCQUFnbEFJazg2L0dPTFpGSkFFSTU4RnpaRExFRUFDQ1VBT1R5M01mRk5zZ21BTkVjL25BMlFEZ0JBQWdsQU9rOEE4YXk5QWdBQmtFaWk4NUZBSGhsSEVTeDNMd1NBSUJRQXNBL1BCV0dzTkJjQ1FEL01ocmFzOFM4SlFEOGh3SFJtTVhsSFFIZ1BXT2lKY3ZLTFFFQUNDVUFmTURUWWpNV2xBOEpBQjh6TXRxd2xIeEdBUGlVd2RHQVJlUU9BZUFlNDJOcWxvLzdCSUF2R0NLVHNuQjhTUUQ0bWxFeUhVdkdFZ0xBSWdiS1JDd1dDd2tBU3hrclU3Qk1MQ2NBUE1Cd0tjNEM4UkFCNERGR1RGbVdoa2M5dmZ6NmZ2WTFNS1VmUDUvUHZnVCtZZlN6ampjQVZqSjBpckFRckNZQXJHZjBuTTRTc0lVQXNJa0JkQ0kzbjQzOEJzQVlmaEk0a3RIUEVONEFHTU5JT294YnpTZ0N3REFHMHdIY1pBYnlGUkRqK1Rwb0QwWS93M2tENktQTzJEV3FocXR6Uyt0c003YnpCdERFOVZqV21SUVh3MktFbWd0YTZxcFl6UnRBQjIvbmJLbVphMHhzVk9vR2x0MW1yT1lOWUhvZkhzVlNnK05pWGp4dWloV3NkcEU4U2dEbWRtZXdGanljTXJERVhBdFg4R3BaVGdBbTl1VThyWGs0WmVBems2NVh6Y3RtQ1FHWTFjSXhXdlp3eXNCYnN5OVQyZXZuUGdHWTBrUFRzL0xobElFMnExUDVnL0FaQVpqUGlxRlovSEJtWnFEZm9oVC9STndTZ01tc25wVlRITTZFRXZSZWlDaytIVmNDTUpPTjgzR1d3OWsxQXlIM2Y1YVB5VVVBSmpKa0xNNTFPSHVVSVBDZXovV1Jrd25BSEFhT3doa1A1NHdsQ0wvUE0zNzhRQUl3Z2VIamI5N0RXYjhFN3UzVnZMY2lod0JVdDlQSTYzRTRLL1RBbmJ5ang4MXBUQUJLMjNYQTlUdWN4L1RBZlh0SXY5dlZpUURVZGNBNFN6aWNXMjZqK3pORXdtMmNsQUFVNVZoeUdKc3RsdjhlUUVVT0pFYzZZRE5VK0xXR1d3SlFqdW5QOFRRZ2t3RFVZdnB6RmcwSUpBQ0ZtUDZjU3dQU0NFQVZwajhWYUVBVUFTakI5S2NPRGNnaEFPY3ovYWxHQTBJSXdNbE1mMnJTZ0FRQ2NDYlRuOG8wb0QwQk9JM3BUMzBhMEpzQW5NUDBaeFlhMEpnQW5NRDBaeTRhMEpVQUhNMzBaMFlhMEpJQUhNcjBaMTRhMEk4QUhNZjBaM1lhMEl3QUhNVDBwd2NONkVRQWptRDYwNGtHdENFQXV6UDk2VWNEZWhDQWZabitkS1VCRFFqQWpreC9ldE9BMlFuQVhreC9FbWpBMUFSZ0Y2WS9PVFJnWGs4dnY3NmZmUTJ0SExOVFRYK3FzZk5uNUExZ0pHZUFXTWRzUzY4Q1kza0RHT093ZlduNlU1bURNQmR2QUFQWTlQRHFzQzNxVldBSUFaaUc2YzhVYk5TSkNNQld2dmVIZC93ZU1Bc0IyTVQwaHc5cHdCUytuWDBCZk1IMFgyM2dkTEFLSy96OTg5dUFMczRiUUdubURsT3pnWXNUZ1BYMmZycHhlR2hnNzIzc0pXTUxBU2pLOUtjTm03a3NBYWpJZ2FFWlc3b21BU2pIVWFFbEc3c2dBYWpGSWFFeDI3c2FBU2pFOGFBOW03d1VBVmh2N0ZaMk1Bamg0TlFoQUNYWXhFU3g0WXNRQUlCUUFyREprQWNaVDBNRWNuWXFFSUN0Tm01Qk81aFl6czdwQkFBZ2xBQU1zUHBKeENNTTRaeWRjL2x6MEdPOGJzZmxmNWZLOW9WWHpzNkp2QUdNdEhCcjJzSHdqck56Q204QWcxMDM2TzBUamIwTGR6Zzd4eE9BdmRpeXNJNnpjeGhmQVFHRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlRU0FJQlFBZ0FRU2dBQVFna0FRQ2dCQUFnbEFBQ2hCQUFnbEFEUTA0K2Z6MmRmQWxRbkFBQ2hCQUFnbEFBQWhCSUFnRkFDQUJCS0FPanA3NS9mQmYrdm9CUUJBQWdsQUFDaEJJQzJobngxNC9zZkdoTUFPdHM0dmsxL2VoTUFnRkFDUUhPcm4rSTkvdFBlMDh1djcyZGZBeHhoK1orSE0vb0o0UTJBRkF2SHV1bFBEbThBSkxwOUd6RDNDU1FBQUtGOEJRUVFTZ0FBUWdrQVFDZ0JBQWdsQUFDaEJBQWdsQUFBaEJJQWdGQUNBQkJLQUFCQ0NRQkFLQUVBQ0NVQUFLRUVBQ0NVQUFDRUVnQ0FVQUlBRUVvQUFFSUpBRUFvQVFBSUpRQUFvUVFBSUpRQUFJUVNBSUJRQWdBUVNnQUFRZ2tBUUNnQkFBZ2xBQUNoQkFBZ2xBQUFoQklBZ0ZBQ0FCQktBQUJDQ1FCQUtBRUFDQ1VBQUtFRUFDQ1VBQUNFRWdDQVVBSUFFRW9BQUVJSkFFQW9BUUFJSlFBQW9RUUFJSlFBQUlUNlB6YzU3ZXNYNlFmbUFBQUFBRWxGVGtTdVFtQ0MiLCAic2l6ZXMiOiAiNTEyeDUxMiIsICJ0eXBlIjogImltYWdlL3BuZyIsICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSJ9XX0=">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAFMklEQVR4nO3dwXXbSBRE0S8frxSaonAEXjoQR+AkpPi8wLGOTIIg2AXyVzXfXc2s0P37EQI1HPHl/ddrAaO+dS8A2QgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBIvncvwNfbj5+f//zx53fjSpxxB1r3tZ7zf8UnAlqxmgsNrSKgUxuh0NA5AoKEgCAhIEgI6Aa8mT9HQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJA0f6ieD66P8Zlb5x2ID66PsZpbW0B8cH2M29x6AuKD62MM5+b4EE1DqzzH4hhQuQ6rke1ATAMq45E9nvMoegLa+c7TeXAPs3MIXW/mXxq/7sl8NA78R9T5I4z70Db/eqr9GYiGLomop9oDKhpak1JPOQRUNPS/oHrKJKCioX+y6imfgIqGAuspq4DquRtKrKfcAqpnbSi0njIMqJ6vodx6qvc30dtaxrrnoo+/4uEXPZBvQLVjuPpY9dvYA9ZgW0+ZB1Sbw1XGeo8ff3daj3M95R9QXRju8Fjv/eR07MLM66mIgOpsuGNjfeRD9yEr9K+nUgKqL8MdGGvX+zVlqRH1lOfb+FXLQIPqGbv08Da7xNyBBvj8oigoiFvF3IFu5VNPmS3mWHMGZHhghks6xIQB2R6V7cIUswVkfkjmyxswVUARxxOxyP3mCSjoYIKWetUkAcUdSdyCL5khoNDDCF32ifiAoo8hevGL+IDQKzugCV7B6VsIDih99J+iNxIcEBykBhT9qj2Xu53UgGAiMqDc1+uG0E1FBgQfeQGFvlL3SNxaXkCwQkCQhAWUeJO/SdwGwwKCGwKChIAgISBIkgKKe8Ack7VN9TtTfb68E/sdeGpSQId/eScJ7nHsLertx09l7OM/wrLutNigHOVgQNQzmeEDTXqIhiECgoSAIBkMiLdLkxk+0PE7EA1No+dtvHhhmOj8RaJ+eQywmnnSQ7TV4O4na5tJAcEQAUFCQJAQECRhAWU9YA6I22BYQHBDQJDkBRR3k98vcWt5AcFKZECJr9SrQjcVGRB8pAYU+nq9JHc7qQHBRHBAua/aE9EbCQ6owke/SN9CdkBoFx9Q9Cs4evGL+IAq9hhCl31ihoAq8DDiFnzJJAFV1JEELfWqeQKqkIOJWOR+UwVU9sdjvrwBswVUxodkuzDFhAGV5VEZLukQcwZUZgdmtZhjJQV061/R+vjzu/3kBtaQ9dffYgJaxjow3MaGBi49vM0uL++/XrvXcN3JQMeaeOSpHLLC9tvnHgEBrR788HDvndGxC/NvyD2gjfNWhnuPjO60HvOGrAO6esz6cB3+OPoDtnk/vgHtPNpjh7vnoo+/4uEXPZBpQOljvUn0Zh3fxkcPdMDOjXi+t7cL6NnqWeQ25BXQc9azCG3IKKBnrmeR2JBLQNSziGvIIiDq+Sqrof6AqOdcUEPNAVHPJSkNdQZEPdsiGmr7TbRzPVb/adN5UNV1BzIfihXz+1D/Q/Ql1PPJeRSmATmPrIXtQBwDsh1WL8+x9AS0MQvPMZkwnFvbHWh1w9RzldvcOn+EnWybenaympv6nakiohnjMzfHh2gEISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgIaBT7f+nVRYCgoSAICEgSAjolOEH150R0Aq3D647I6B1Vh9cd2b6Z36RgjsQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkfwFbUP6AeVN97gAAAABJRU5ErkJggg==">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAFMklEQVR4nO3dwXXbSBRE0S8frxSaonAEXjoQR+AkpPi8wLGOTIIg2AXyVzXfXc2s0P37EQI1HPHl/ddrAaO+dS8A2QgIEgKChIAgISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgISBIvncvwNfbj5+f//zx53fjSpxxB1r3tZ7zf8UnAlqxmgsNrSKgUxuh0NA5AoKEgCAhIEgI6Aa8mT9HQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkBAQJAUFCQJA0f6ieD66P8Zlb5x2ID66PsZpbW0B8cH2M29x6AuKD62MM5+b4EE1DqzzH4hhQuQ6rke1ATAMq45E9nvMoegLa+c7TeXAPs3MIXW/mXxq/7sl8NA78R9T5I4z70Db/eqr9GYiGLomop9oDKhpak1JPOQRUNPS/oHrKJKCioX+y6imfgIqGAuspq4DquRtKrKfcAqpnbSi0njIMqJ6vodx6qvc30dtaxrrnoo+/4uEXPZBvQLVjuPpY9dvYA9ZgW0+ZB1Sbw1XGeo8ff3daj3M95R9QXRju8Fjv/eR07MLM66mIgOpsuGNjfeRD9yEr9K+nUgKqL8MdGGvX+zVlqRH1lOfb+FXLQIPqGbv08Da7xNyBBvj8oigoiFvF3IFu5VNPmS3mWHMGZHhghks6xIQB2R6V7cIUswVkfkjmyxswVUARxxOxyP3mCSjoYIKWetUkAcUdSdyCL5khoNDDCF32ifiAoo8hevGL+IDQKzugCV7B6VsIDih99J+iNxIcEBykBhT9qj2Xu53UgGAiMqDc1+uG0E1FBgQfeQGFvlL3SNxaXkCwQkCQhAWUeJO/SdwGwwKCGwKChIAgISBIkgKKe8Ack7VN9TtTfb68E/sdeGpSQId/eScJ7nHsLertx09l7OM/wrLutNigHOVgQNQzmeEDTXqIhiECgoSAIBkMiLdLkxk+0PE7EA1No+dtvHhhmOj8RaJ+eQywmnnSQ7TV4O4na5tJAcEQAUFCQJAQECRhAWU9YA6I22BYQHBDQJDkBRR3k98vcWt5AcFKZECJr9SrQjcVGRB8pAYU+nq9JHc7qQHBRHBAua/aE9EbCQ6owke/SN9CdkBoFx9Q9Cs4evGL+IAq9hhCl31ihoAq8DDiFnzJJAFV1JEELfWqeQKqkIOJWOR+UwVU9sdjvrwBswVUxodkuzDFhAGV5VEZLukQcwZUZgdmtZhjJQV061/R+vjzu/3kBtaQ9dffYgJaxjow3MaGBi49vM0uL++/XrvXcN3JQMeaeOSpHLLC9tvnHgEBrR788HDvndGxC/NvyD2gjfNWhnuPjO60HvOGrAO6esz6cB3+OPoDtnk/vgHtPNpjh7vnoo+/4uEXPZBpQOljvUn0Zh3fxkcPdMDOjXi+t7cL6NnqWeQ25BXQc9azCG3IKKBnrmeR2JBLQNSziGvIIiDq+Sqrof6AqOdcUEPNAVHPJSkNdQZEPdsiGmr7TbRzPVb/adN5UNV1BzIfihXz+1D/Q/Ql1PPJeRSmATmPrIXtQBwDsh1WL8+x9AS0MQvPMZkwnFvbHWh1w9RzldvcOn+EnWybenaympv6nakiohnjMzfHh2gEISBICAgSAoKEgCAhIEgICBICgoSAICEgSAgIEgKChIAgIaBT7f+nVRYCgoSAICEgSAjolOEH150R0Aq3D647I6B1Vh9cd2b6Z36RgjsQJAQECQFBQkCQEBAkBAQJAUFCQJAQECQEBAkBQUJAkBAQJAQECQFBQkCQEBAkfwFbUP6AeVN97gAAAABJRU5ErkJggg==">
+<meta name="theme-color" content="#B5760A">
 <style>
   :root {
     --bg: #FAF7F2;
@@ -56,14 +60,31 @@
   }
 
   .day-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding: 22px 0;
+    padding: 18px 0;
     border-bottom: 1px solid var(--divider);
   }
 
   .day-row:first-of-type { border-top: 1px solid var(--divider); }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .hour-breakdown {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 10px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .hour-breakdown .hour-good { color: var(--accent); }
+  .hour-breakdown .hour-mid { color: var(--slate); }
+  .hour-breakdown .hour-low { color: var(--danger); opacity: 0.75; }
 
   .day-label {
     font-size: 0.95rem;
@@ -157,9 +178,18 @@
   </header>
 
   <div id="results">
-    <div class="day-row"><span class="day-label">Dziś</span><span class="day-value" id="val-0">–</span></div>
-    <div class="day-row"><span class="day-label">Jutro</span><span class="day-value" id="val-1">–</span></div>
-    <div class="day-row"><span class="day-label">Pojutrze</span><span class="day-value" id="val-2">–</span></div>
+    <div class="day-row">
+      <div class="day-header"><span class="day-label">Dziś</span><span class="day-value" id="val-0">–</span></div>
+      <div class="hour-breakdown" id="hours-0"></div>
+    </div>
+    <div class="day-row">
+      <div class="day-header"><span class="day-label">Jutro</span><span class="day-value" id="val-1">–</span></div>
+      <div class="hour-breakdown" id="hours-1"></div>
+    </div>
+    <div class="day-row">
+      <div class="day-header"><span class="day-label">Pojutrze</span><span class="day-value" id="val-2">–</span></div>
+      <div class="hour-breakdown" id="hours-2"></div>
+    </div>
   </div>
 
   <div class="status" id="status"></div>
@@ -243,28 +273,34 @@ function cloudMultiplierForHour(lowPct, midPct, highPct) {
 }
 
 // Liczy produkcję CAŁEGO DNIA jako procent maksymalnej możliwej produkcji
-// (czyli produkcji przy całkowicie bezchmurnym niebie przez całe okno).
+// (czyli produkcji przy całkowicie bezchmurnym niebie przez całe okno),
+// a dodatkowo zwraca rozbicie na poszczególne godziny — przydatne np. do
+// wybrania najlepszej godziny na pranie czy inny sprzęt energochłonny.
+// Każda wartość w hourlyPercents to procent SZCZYTOWEJ możliwej produkcji
+// (czyli tej, jaką dałaby godzina o wadze 1 przy bezchmurnym niebie) —
+// dzięki temu liczby są bezpośrednio porównywalne między sobą i z wynikiem dnia.
 // hourlyCloudData: tablica obiektów {low, mid, high} — po jednym na każdą
 // godzinę okna nasłonecznienia, w kolejności rosnącej.
-function calculateDayProductionPercent(hourlyCloudData) {
+function calculateDayProduction(hourlyCloudData) {
   const weights = getHourWeights(hourlyCloudData.length);
 
   let weightedSum = 0;
   let maxPossibleSum = 0;
+  const hourlyPercents = [];
 
   for (let i = 0; i < weights.length; i++) {
     const weight = weights[i];
     maxPossibleSum += weight;
 
     const hourData = hourlyCloudData[i];
-    if (!hourData) continue; // brak danych dla tej godziny - liczymy jako 0
+    const multiplier = hourData ? cloudMultiplierForHour(hourData.low, hourData.mid, hourData.high) : 0;
 
-    const multiplier = cloudMultiplierForHour(hourData.low, hourData.mid, hourData.high);
     weightedSum += weight * multiplier;
+    hourlyPercents.push(weight * multiplier * 100);
   }
 
-  if (maxPossibleSum === 0) return null;
-  return (weightedSum / maxPossibleSum) * 100;
+  const dayPercent = maxPossibleSum === 0 ? null : (weightedSum / maxPossibleSum) * 100;
+  return { dayPercent, hourlyPercents };
 }
 
 /* =========================================================================
@@ -357,6 +393,7 @@ async function runForecast() {
 
     const today = new Date();
     const dayLabels = ["val-0", "val-1", "val-2"];
+    const hourContainerIds = ["hours-0", "hours-1", "hours-2"];
 
     for (let dayOffset = 0; dayOffset < 3; dayOffset++) {
       const targetDate = new Date(today);
@@ -366,16 +403,25 @@ async function runForecast() {
       const dayData = byDate[dateStr] || {};
       const hourlyCloudData = sunHours.map(h => dayData[h]);
 
-      const percent = calculateDayProductionPercent(hourlyCloudData);
+      const { dayPercent, hourlyPercents } = calculateDayProduction(hourlyCloudData);
       const el = document.getElementById(dayLabels[dayOffset]);
+      const hoursEl = document.getElementById(hourContainerIds[dayOffset]);
 
-      if (percent === null) {
+      if (dayPercent === null) {
         el.textContent = "brak danych";
         el.className = "day-value";
+        hoursEl.innerHTML = "";
       } else {
-        el.textContent = `${Math.round(percent)}%`;
+        el.textContent = `${Math.round(dayPercent)}%`;
         el.className = "day-value " +
-          (percent >= 66 ? "value-good" : percent >= 33 ? "value-mid" : "value-low");
+          (dayPercent >= 66 ? "value-good" : dayPercent >= 33 ? "value-mid" : "value-low");
+
+        // Rozbicie godzinowe - do planowania np. prania w najlepszej godzinie
+        hoursEl.innerHTML = sunHours.map((h, i) => {
+          const p = hourlyPercents[i];
+          const cls = p >= 66 ? "hour-good" : p >= 33 ? "hour-mid" : "hour-low";
+          return `<span class="${cls}">${h}-${h + 1}: ${Math.round(p)}%</span>`;
+        }).join("");
       }
     }
 
