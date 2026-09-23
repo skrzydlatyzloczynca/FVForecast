@@ -257,23 +257,40 @@ async function fetchForecast(lat, lon, tilt, azimuth) {
   return response.json();
 }
 
-// Buduje mapę: "YYYY-MM-DD" -> lista {hour, gti, terrestrial}, TYLKO dla godzin
-// dziennych (terrestrial_radiation > 0 — w nocy jest dokładnie zero, więc to
-// naturalnie i automatycznie wyznacza okno "od wschodu do zachodu słońca",
-// bez potrzeby ręcznego ustawiania godzin).
-function buildDaylightHoursByDate(hourlyResponse) {
+// Buduje mapę: "YYYY-MM-DD" -> { godzina -> {gti, terrestrial} }, dla WSZYSTKICH
+// godzin (bez filtrowania dnia/nocy) — okno godzin, które nas interesują,
+// wyznaczamy osobno funkcją computeWindowHours().
+function buildDataByDate(hourlyResponse) {
   const byDate = {};
   const times = hourlyResponse.time;
   for (let i = 0; i < times.length; i++) {
-    const terr = hourlyResponse.terrestrial_radiation[i];
-    if (terr <= 0) continue; // noc - pomijamy
-
     const dateStr = times[i].slice(0, 10);
     const hour = parseInt(times[i].slice(11, 13), 10);
-    if (!byDate[dateStr]) byDate[dateStr] = [];
-    byDate[dateStr].push({ hour, gti: hourlyResponse.global_tilted_irradiance[i], terrestrial: terr });
+    if (!byDate[dateStr]) byDate[dateStr] = {};
+    byDate[dateStr][hour] = {
+      gti: hourlyResponse.global_tilted_irradiance[i],
+      terrestrial: hourlyResponse.terrestrial_radiation[i]
+    };
   }
   return byDate;
+}
+
+// Okno 7 kolejnych godzin, w których panele realnie widzą słońce, wyliczone
+// z samego azymutu instalacji — bez ręcznego wpisywania godzin.
+// Godzina centralna (środek 7-godzinnego okna) przesuwa się w stronę poranka
+// dla paneli zwróconych na wschód (azymut ujemny) i w stronę popołudnia
+// dla zwróconych na zachód (azymut dodatni), o 1 godzinę na każde 30°
+// odchylenia od południa.
+// UWAGA: ten wzór zakłada panele o realnym nachyleniu (nie poziome) —
+// dla paneli leżących płasko okno powinno prawdopodobnie objąć cały dzień;
+// to świadomie zostawione do kolejnej iteracji.
+function computeWindowHours(azimuth) {
+  const centralHourStart = 12 + Math.floor(azimuth / 30);
+  const hours = [];
+  for (let h = centralHourStart - 3; h <= centralHourStart + 3; h++) {
+    hours.push(h);
+  }
+  return hours; // zawsze 7 godzin, w kolejności rosnącej
 }
 
 function formatKwh(kwh) { return kwh.toFixed(1).replace(".", ","); }
@@ -298,7 +315,8 @@ async function runForecast() {
 
   try {
     const data = await fetchForecast(settings.lat, settings.lon, settings.tilt, settings.azimuth);
-    const byDate = buildDaylightHoursByDate(data.hourly);
+    const byDate = buildDataByDate(data.hourly);
+    const windowHours = computeWindowHours(settings.azimuth);
 
     const today = new Date();
     const dayLabels = ["val-0", "val-1", "val-2"];
@@ -309,16 +327,25 @@ async function runForecast() {
       targetDate.setDate(today.getDate() + dayOffset);
       const dateStr = localDateString(targetDate);
 
-      const hoursForDay = (byDate[dateStr] || []).sort((a, b) => a.hour - b.hour);
+      const dayData = byDate[dateStr] || {};
       const el = document.getElementById(dayLabels[dayOffset]);
       const hoursEl = document.getElementById(hourContainerIds[dayOffset]);
 
-      if (hoursForDay.length === 0) {
+      if (Object.keys(dayData).length === 0) {
         el.textContent = "brak danych";
         el.className = "day-value";
         hoursEl.innerHTML = "";
         continue;
       }
+
+      // Dla każdej godziny w wyliczonym oknie bierzemy dane z API, a jeśli
+      // jakaś godzina wypadłaby poza zwróconym zakresem (nie powinno się zdarzyć
+      // przy forecast_days=3), traktujemy ją jako zerową produkcję.
+      const hoursForDay = windowHours.map(h => ({
+        hour: h,
+        gti: dayData[h] ? dayData[h].gti : 0,
+        terrestrial: dayData[h] ? dayData[h].terrestrial : 0
+      }));
 
       const { totalKwh, dayPercent, hourly } = computeDayEstimate(hoursForDay, settings.kwp);
 
