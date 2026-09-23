@@ -14,7 +14,6 @@
     --text: #22201C;
     --muted: #6B6558;
     --accent: #B5760A;
-    --accent-soft: #E9CE9A;
     --slate: #57687A;
     --divider: #E4DFD3;
     --danger: #A6432E;
@@ -31,10 +30,7 @@
     min-height: 100vh;
   }
 
-  .wrap {
-    max-width: 420px;
-    margin: 0 auto;
-  }
+  .wrap { max-width: 460px; margin: 0 auto; }
 
   header {
     display: flex;
@@ -43,57 +39,23 @@
     margin-bottom: 28px;
   }
 
-  h1 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
+  h1 { font-size: 1.25rem; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
 
   .icon-btn {
-    background: none;
-    border: none;
-    font-size: 1.3rem;
-    cursor: pointer;
-    color: var(--muted);
-    padding: 4px 8px;
+    background: none; border: none; font-size: 1.3rem;
+    cursor: pointer; color: var(--muted); padding: 4px 8px;
   }
 
-  .day-row {
-    padding: 18px 0;
-    border-bottom: 1px solid var(--divider);
-  }
-
+  .day-row { padding: 18px 0; border-bottom: 1px solid var(--divider); }
   .day-row:first-of-type { border-top: 1px solid var(--divider); }
 
-  .day-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-  }
+  .day-header { display: flex; align-items: baseline; justify-content: space-between; }
 
-  .hour-breakdown {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-    margin-top: 10px;
-    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-
-  .hour-breakdown .hour-good { color: var(--accent); }
-  .hour-breakdown .hour-mid { color: var(--slate); }
-  .hour-breakdown .hour-low { color: var(--danger); opacity: 0.75; }
-
-  .day-label {
-    font-size: 0.95rem;
-    color: var(--muted);
-  }
+  .day-label { font-size: 0.95rem; color: var(--muted); }
 
   .day-value {
     font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
@@ -102,70 +64,41 @@
   .value-mid { color: var(--slate); }
   .value-low { color: var(--danger); }
 
-  .status {
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: var(--muted);
+  .hour-breakdown {
+    display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+    font-size: 0.78rem; color: var(--muted);
   }
+  .hour-breakdown .hour-good { color: var(--accent); }
+  .hour-breakdown .hour-mid { color: var(--slate); }
+  .hour-breakdown .hour-low { color: var(--danger); opacity: 0.75; }
 
+  .status { margin-top: 20px; font-size: 0.85rem; color: var(--muted); }
   .status.error { color: var(--danger); }
 
-  #settings {
-    margin-top: 32px;
-    padding-top: 20px;
-    border-top: 1px solid var(--divider);
-    display: none;
-  }
-
+  #settings { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--divider); display: none; }
   #settings.open { display: block; }
 
-  label {
-    display: block;
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin: 14px 0 4px;
-  }
+  label { display: block; font-size: 0.85rem; color: var(--muted); margin: 14px 0 4px; }
+  .hint { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
 
   input {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 1rem;
-    border: 1px solid var(--divider);
-    border-radius: 4px;
-    background: #fff;
-    color: var(--text);
-    font-family: inherit;
+    width: 100%; padding: 10px 12px; font-size: 1rem;
+    border: 1px solid var(--divider); border-radius: 4px;
+    background: #fff; color: var(--text); font-family: inherit;
   }
 
-  .hour-row {
-    display: flex;
-    gap: 12px;
-  }
-
-  .hour-row > div { flex: 1; }
+  .field-row { display: flex; gap: 12px; }
+  .field-row > div { flex: 1; }
 
   button.primary {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    font-size: 1rem;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    margin-top: 20px; width: 100%; padding: 12px; font-size: 1rem;
+    background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer;
   }
 
   .refresh-link {
-    display: inline-block;
-    margin-top: 24px;
-    font-size: 0.85rem;
-    color: var(--muted);
-    text-decoration: underline;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
+    display: inline-block; margin-top: 24px; font-size: 0.85rem; color: var(--muted);
+    text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0;
   }
 </style>
 </head>
@@ -199,16 +132,21 @@
     <label for="coords">Współrzędne paneli (lat, lon — wklej z Google Maps)</label>
     <input type="text" id="coords" placeholder="np. 52.1094, 19.4180">
 
-    <div class="hour-row">
+    <div class="field-row">
       <div>
-        <label for="sunStart">Słońce od (godz.)</label>
-        <input type="number" id="sunStart" min="0" max="23" value="9">
+        <label for="tilt">Kąt nachylenia (°)</label>
+        <input type="number" id="tilt" min="0" max="90" value="35">
+        <div class="hint">0° = płasko, 90° = pionowo</div>
       </div>
       <div>
-        <label for="sunEnd">Słońce do (godz.)</label>
-        <input type="number" id="sunEnd" min="1" max="24" value="14">
+        <label for="azimuth">Azymut (°)</label>
+        <input type="number" id="azimuth" min="-180" max="180" value="0">
+        <div class="hint">konwencja Open-Meteo: 0°=płd, -90°=wsch, 90°=zach, ±180°=płn</div>
       </div>
     </div>
+
+    <label for="kwp">Moc instalacji (kWp)</label>
+    <input type="number" id="kwp" min="0" step="0.1" value="8">
 
     <button class="primary" id="saveSettings">Zapisz i pobierz prognozę</button>
   </div>
@@ -216,91 +154,67 @@
 
 <script>
 /* =========================================================================
-   WZÓR SZACOWANIA PRODUKCJI — WERSJA 1 (celowo bardzo uproszczona)
+   WZÓR SZACOWANIA PRODUKCJI — WERSJA 2 (oparta na GTI z Open-Meteo)
    -------------------------------------------------------------------------
-   To jest prowizoryczny model, do rozbudowy w kolejnych wersjach o:
-   - rzeczywisty kąt padania słońca (trygonometria, pora roku)
-   - kąt nachylenia paneli i ich azymut
-   Wszystkie stałe poniżej są CELOWO zahardkodowane pod obecne, bardzo
-   uproszczone założenia — nie wyciągaj ich do configu, dopóki model
-   się nie rozwinie, żeby nie komplikować kodu na zapas.
+   W tej wersji NIE liczymy już sami wpływu chmur ani "wagi godziny" —
+   Open-Meteo samo liczy pełną transpozycję promieniowania na nachyloną
+   płaszczyznę (uwzględnia realną pozycję słońca, porę roku, zachmurzenie).
+   Nasza rola ogranicza się do:
+   1) przeliczenia W/m² -> kW przez moc znamionową instalacji (kWp),
+   2) doliczenia strat systemowych (falownik, okablowanie, temperatura),
+   3) zbudowania orientacyjnego "procentu maksimum" względem promieniowania
+      teoretycznego poza atmosferą (patrz niżej — to świadome uproszczenie).
    ========================================================================= */
 
-// Wagi kolejnych godzin w oknie nasłonecznienia, reprezentujące ich udział
-// w maksymalnej możliwej produkcji dnia (godziny bliżej południa produkują
-// więcej niż godziny brzegowe, bo słońce stoi wyżej).
-// UWAGA: ta tablica ma 5 elementów i zakłada okno nasłonecznienia
-// o długości DOKŁADNIE 5 godzin (obecnie: 9:00-14:00). Jeśli kiedyś
-// zmienisz okno na inną długość, ta tablica przestanie pasować 1:1
-// do liczby godzin — patrz getHourWeights() poniżej.
-const HOUR_WEIGHTS_5H = [0.5, 0.75, 1, 0.75, 0.5];
+// Współczynnik strat systemowych (Performance Ratio) — typowe realne instalacje
+// tracą 15-25% względem mocy "papierowej" (falownik, okablowanie, temperatura,
+// zabrudzenie paneli). Wartość do skorygowania, gdy porównasz z prawdziwym licznikiem.
+const PERFORMANCE_RATIO = 0.80;
 
-// Wpływ pełnego (100%) zachmurzenia na danym poziomie na produkcję.
-// Przy 0% zachmurzenia na danym poziomie mnożnik = 1 (brak wpływu).
-// Między 0% a 100% przyjmujemy zależność liniową.
-const CLOUD_FLOOR_MULTIPLIER = {
-  low: 0,      // pełne niskie zachmurzenie -> produkcja spada do zera
-  mid: 1 / 3,  // pełne średnie zachmurzenie -> produkcja spada do 1/3
-  high: 1 / 2  // pełne wysokie (pierzaste) zachmurzenie -> produkcja spada do 1/2
-};
+// Jaka część promieniowania teoretycznego (poza atmosferą, "terrestrial_radiation")
+// realnie dociera do powierzchni Ziemi w PRAWDZIWIE bezchmurny dzień.
+// To NIE jest ścisła fizyka dla nachylonej płaszczyzny (terrestrial_radiation
+// jest liczone dla płaszczyzny poziomej) — to świadomy, zgrubny skrót,
+// żeby dostać orientacyjny "% dobrego dnia" bez pisania własnej astronomii
+// (obliczania pozycji słońca) tylko po to, żeby mieć punkt odniesienia.
+// Efekt uboczny: przy stromym nachyleniu i niskim słońcu wynik może chwilowo
+// "przebić" 100% — dlatego wynik zawsze przycinamy w dół do 100.
+const CLEAR_SKY_FACTOR = 0.75;
 
-// Zwraca tablicę wag dla okna nasłonecznienia o zadanej długości.
-// Dla dokładnie 5 godzin używamy dopracowanej tablicy HOUR_WEIGHTS_5H.
-// Dla każdej innej długości okna na razie używamy naiwnego fallbacku
-// (wszystkie godziny równe) — do poprawienia, gdy model się rozwinie.
-function getHourWeights(hoursCount) {
-  if (hoursCount === HOUR_WEIGHTS_5H.length) {
-    return HOUR_WEIGHTS_5H;
-  }
-  console.warn(`Okno nasłonecznienia ma ${hoursCount} godzin, a wzór wag jest dopracowany tylko dla 5. Używam tymczasowo równych wag.`);
-  return new Array(hoursCount).fill(1);
+// Liczy szacunki dla JEDNEJ godziny.
+// gti: Global Tilted Irradiance z Open-Meteo (W/m²) — już z uwzględnieniem
+//      Twojego kąta nachylenia, azymutu i prognozowanego zachmurzenia.
+// terrestrial: promieniowanie teoretyczne poza atmosferą dla tej godziny
+//      i lokalizacji (W/m², płaszczyzna pozioma) — służy tylko jako punkt
+//      odniesienia do wyliczenia procentu, patrz komentarz przy CLEAR_SKY_FACTOR.
+function computeHourEstimate(gti, terrestrial, kwp) {
+  const gtiClamped = Math.max(0, gti); // GTI potrafi sporadycznie wyjść lekko ujemne - to znany drobny błąd API
+
+  const kwh = kwp * (gtiClamped / 1000) * PERFORMANCE_RATIO;
+  const referenceKwh = kwp * (terrestrial * CLEAR_SKY_FACTOR / 1000) * PERFORMANCE_RATIO;
+
+  const percent = referenceKwh > 0 ? Math.min(100, (kwh / referenceKwh) * 100) : 0;
+
+  return { kwh, referenceKwh, percent };
 }
 
-// Liczy mnożnik produkcji (0..1) dla JEDNEJ godziny na podstawie zachmurzenia
-// na trzech poziomach (w procentach 0-100, tak jak zwraca je Open-Meteo).
-// Każdy poziom chmur traktujemy jako NIEZALEŻNĄ warstwę atmosfery —
-// efekty się mnożą (światło przechodzi przez kolejne warstwy).
-function cloudMultiplierForHour(lowPct, midPct, highPct) {
-  const lowFrac = lowPct / 100;
-  const midFrac = midPct / 100;
-  const highFrac = highPct / 100;
+// Liczy podsumowanie CAŁEGO DNIA na podstawie godzinowych danych GTI/terrestrial.
+// hourlyData: tablica {hour, gti, terrestrial} — TYLKO godziny dzienne
+// (noc jest już odfiltrowana wcześniej, bo terrestrial_radiation = 0 w nocy).
+function computeDayEstimate(hourlyData, kwp) {
+  let totalKwh = 0;
+  let totalReferenceKwh = 0;
+  const hourly = [];
 
-  const lowFactor  = 1 - lowFrac  * (1 - CLOUD_FLOOR_MULTIPLIER.low);
-  const midFactor  = 1 - midFrac  * (1 - CLOUD_FLOOR_MULTIPLIER.mid);
-  const highFactor = 1 - highFrac * (1 - CLOUD_FLOOR_MULTIPLIER.high);
-
-  return lowFactor * midFactor * highFactor;
-}
-
-// Liczy produkcję CAŁEGO DNIA jako procent maksymalnej możliwej produkcji
-// (czyli produkcji przy całkowicie bezchmurnym niebie przez całe okno),
-// a dodatkowo zwraca rozbicie na poszczególne godziny — przydatne np. do
-// wybrania najlepszej godziny na pranie czy inny sprzęt energochłonny.
-// Każda wartość w hourlyPercents to procent SZCZYTOWEJ możliwej produkcji
-// (czyli tej, jaką dałaby godzina o wadze 1 przy bezchmurnym niebie) —
-// dzięki temu liczby są bezpośrednio porównywalne między sobą i z wynikiem dnia.
-// hourlyCloudData: tablica obiektów {low, mid, high} — po jednym na każdą
-// godzinę okna nasłonecznienia, w kolejności rosnącej.
-function calculateDayProduction(hourlyCloudData) {
-  const weights = getHourWeights(hourlyCloudData.length);
-
-  let weightedSum = 0;
-  let maxPossibleSum = 0;
-  const hourlyPercents = [];
-
-  for (let i = 0; i < weights.length; i++) {
-    const weight = weights[i];
-    maxPossibleSum += weight;
-
-    const hourData = hourlyCloudData[i];
-    const multiplier = hourData ? cloudMultiplierForHour(hourData.low, hourData.mid, hourData.high) : 0;
-
-    weightedSum += weight * multiplier;
-    hourlyPercents.push(weight * multiplier * 100);
+  for (const entry of hourlyData) {
+    const { kwh, referenceKwh, percent } = computeHourEstimate(entry.gti, entry.terrestrial, kwp);
+    totalKwh += kwh;
+    totalReferenceKwh += referenceKwh;
+    hourly.push({ hour: entry.hour, kwh, percent });
   }
 
-  const dayPercent = maxPossibleSum === 0 ? null : (weightedSum / maxPossibleSum) * 100;
-  return { dayPercent, hourlyPercents };
+  const dayPercent = totalReferenceKwh > 0 ? Math.min(100, (totalKwh / totalReferenceKwh) * 100) : null;
+  return { totalKwh, dayPercent, hourly };
 }
 
 /* =========================================================================
@@ -313,14 +227,10 @@ function loadSettings() {
   try {
     const raw = localStorage.getItem(SETTINGS_KEY);
     return raw ? JSON.parse(raw) : null;
-  } catch (e) {
-    return null;
-  }
+  } catch (e) { return null; }
 }
 
-function saveSettings(settings) {
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-}
+function saveSettings(settings) { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }
 
 function parseCoords(text) {
   const parts = text.split(",").map(s => parseFloat(s.trim()));
@@ -334,42 +244,42 @@ function parseCoords(text) {
 
 function pad2(n) { return n.toString().padStart(2, "0"); }
 
-// Zwraca datę w formacie YYYY-MM-DD w CZASIE LOKALNYM urządzenia
-// (zakładamy, że telefon jest w tej samej strefie czasowej co panele —
-// rozsądne założenie dla osobistej aplikacji).
 function localDateString(date) {
   return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
 }
 
-function generateSunHours(start, end) {
-  const hours = [];
-  for (let h = start; h < end; h++) hours.push(h);
-  return hours;
-}
-
-async function fetchForecast(lat, lon) {
+async function fetchForecast(lat, lon, tilt, azimuth) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-              `&hourly=cloudcover_low,cloudcover_mid,cloudcover_high&forecast_days=3&timezone=auto`;
+              `&hourly=global_tilted_irradiance,terrestrial_radiation` +
+              `&tilt=${tilt}&azimuth=${azimuth}&forecast_days=3&timezone=auto`;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Open-Meteo odpowiedziało błędem: ${response.status}`);
   return response.json();
 }
 
-// Buduje mapę: "YYYY-MM-DD" -> { godzina -> {low, mid, high} }
-function buildCloudDataByDate(hourlyResponse) {
+// Buduje mapę: "YYYY-MM-DD" -> lista {hour, gti, terrestrial}, TYLKO dla godzin
+// dziennych (terrestrial_radiation > 0 — w nocy jest dokładnie zero, więc to
+// naturalnie i automatycznie wyznacza okno "od wschodu do zachodu słońca",
+// bez potrzeby ręcznego ustawiania godzin).
+function buildDaylightHoursByDate(hourlyResponse) {
   const byDate = {};
   const times = hourlyResponse.time;
   for (let i = 0; i < times.length; i++) {
+    const terr = hourlyResponse.terrestrial_radiation[i];
+    if (terr <= 0) continue; // noc - pomijamy
+
     const dateStr = times[i].slice(0, 10);
     const hour = parseInt(times[i].slice(11, 13), 10);
-    if (!byDate[dateStr]) byDate[dateStr] = {};
-    byDate[dateStr][hour] = {
-      low: hourlyResponse.cloudcover_low[i],
-      mid: hourlyResponse.cloudcover_mid[i],
-      high: hourlyResponse.cloudcover_high[i]
-    };
+    if (!byDate[dateStr]) byDate[dateStr] = [];
+    byDate[dateStr].push({ hour, gti: hourlyResponse.global_tilted_irradiance[i], terrestrial: terr });
   }
   return byDate;
+}
+
+function formatKwh(kwh) { return kwh.toFixed(1).replace(".", ","); }
+
+function tierClass(percent) {
+  return percent >= 66 ? "good" : percent >= 33 ? "mid" : "low";
 }
 
 async function runForecast() {
@@ -377,7 +287,7 @@ async function runForecast() {
   const statusEl = document.getElementById("status");
 
   if (!settings) {
-    statusEl.textContent = "Uzupełnij ustawienia (współrzędne i godziny), żeby zobaczyć prognozę.";
+    statusEl.textContent = "Uzupełnij ustawienia (współrzędne, kąt, azymut, moc instalacji).";
     statusEl.className = "status";
     document.getElementById("settings").classList.add("open");
     return;
@@ -387,9 +297,8 @@ async function runForecast() {
   statusEl.className = "status";
 
   try {
-    const data = await fetchForecast(settings.lat, settings.lon);
-    const byDate = buildCloudDataByDate(data.hourly);
-    const sunHours = generateSunHours(settings.sunStart, settings.sunEnd);
+    const data = await fetchForecast(settings.lat, settings.lon, settings.tilt, settings.azimuth);
+    const byDate = buildDaylightHoursByDate(data.hourly);
 
     const today = new Date();
     const dayLabels = ["val-0", "val-1", "val-2"];
@@ -400,29 +309,26 @@ async function runForecast() {
       targetDate.setDate(today.getDate() + dayOffset);
       const dateStr = localDateString(targetDate);
 
-      const dayData = byDate[dateStr] || {};
-      const hourlyCloudData = sunHours.map(h => dayData[h]);
-
-      const { dayPercent, hourlyPercents } = calculateDayProduction(hourlyCloudData);
+      const hoursForDay = (byDate[dateStr] || []).sort((a, b) => a.hour - b.hour);
       const el = document.getElementById(dayLabels[dayOffset]);
       const hoursEl = document.getElementById(hourContainerIds[dayOffset]);
 
-      if (dayPercent === null) {
+      if (hoursForDay.length === 0) {
         el.textContent = "brak danych";
         el.className = "day-value";
         hoursEl.innerHTML = "";
-      } else {
-        el.textContent = `${Math.round(dayPercent)}%`;
-        el.className = "day-value " +
-          (dayPercent >= 66 ? "value-good" : dayPercent >= 33 ? "value-mid" : "value-low");
-
-        // Rozbicie godzinowe - do planowania np. prania w najlepszej godzinie
-        hoursEl.innerHTML = sunHours.map((h, i) => {
-          const p = hourlyPercents[i];
-          const cls = p >= 66 ? "hour-good" : p >= 33 ? "hour-mid" : "hour-low";
-          return `<span class="${cls}">${h}-${h + 1}: ${Math.round(p)}%</span>`;
-        }).join("");
+        continue;
       }
+
+      const { totalKwh, dayPercent, hourly } = computeDayEstimate(hoursForDay, settings.kwp);
+
+      el.textContent = `${formatKwh(totalKwh)} kWh · ${Math.round(dayPercent)}%`;
+      el.className = "day-value value-" + tierClass(dayPercent);
+
+      hoursEl.innerHTML = hourly.map(h => {
+        const cls = "hour-" + tierClass(h.percent);
+        return `<span class="${cls}">${h.hour}-${h.hour + 1}: ${formatKwh(h.kwh)} kWh (${Math.round(h.percent)}%)</span>`;
+      }).join("");
     }
 
     statusEl.textContent = `Zaktualizowano: ${new Date().toLocaleTimeString("pl-PL")}`;
@@ -453,21 +359,22 @@ document.getElementById("saveSettings").addEventListener("click", () => {
     return;
   }
 
-  const sunStart = parseInt(document.getElementById("sunStart").value, 10);
-  const sunEnd = parseInt(document.getElementById("sunEnd").value, 10);
+  const tilt = parseFloat(document.getElementById("tilt").value);
+  const azimuth = parseFloat(document.getElementById("azimuth").value);
+  const kwp = parseFloat(document.getElementById("kwp").value);
 
-  saveSettings({ lat: coords.lat, lon: coords.lon, sunStart, sunEnd });
+  saveSettings({ lat: coords.lat, lon: coords.lon, tilt, azimuth, kwp });
   document.getElementById("settings").classList.remove("open");
   runForecast();
 });
 
-// Przy starcie: wczytaj zapisane ustawienia do formularza (jeśli są) i pobierz prognozę.
 (function init() {
   const settings = loadSettings();
   if (settings) {
     document.getElementById("coords").value = `${settings.lat}, ${settings.lon}`;
-    document.getElementById("sunStart").value = settings.sunStart;
-    document.getElementById("sunEnd").value = settings.sunEnd;
+    document.getElementById("tilt").value = settings.tilt;
+    document.getElementById("azimuth").value = settings.azimuth;
+    document.getElementById("kwp").value = settings.kwp;
   }
   runForecast();
 })();
