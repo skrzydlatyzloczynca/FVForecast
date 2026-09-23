@@ -358,11 +358,15 @@ function buildDayChartSvg(hourly) {
            `<text x="${padLeft - 4}" y="${Number(y) + 3}" font-size="9" fill="#6B6558" text-anchor="end">${v.toFixed(1)}</text>`;
   }).join("");
 
-  // Skrajne etykiety wyrównujemy do wewnątrz (start/end zamiast middle),
-  // żeby nie były przycinane na samej krawędzi wykresu.
-  const hourLabelsStr = hourly.map((h, i) => {
-    const anchor = i === 0 ? "start" : (i === n - 1 ? "end" : "middle");
-    return `<text x="${xAt(i).toFixed(1)}" y="${height - 6}" font-size="9" fill="#6B6558" text-anchor="${anchor}">${h.hour}</text>`;
+  // Podpisy godzin NIE siedzą dokładnie pod punktami danych - są przesunięte
+  // o pół kroku w prawo względem nich (i jest ich o jeden mniej niż punktów).
+  // Powód: każda wartość to "preceding hour mean" (np. "10" = średnia 9-10),
+  // więc podpis "10" opisuje właściwie to, co dzieje się MIĘDZY punktem
+  // reprezentującym godzinę 10 a punktem reprezentującym godzinę 11 - stąd
+  // przesunięcie. Same punkty/linie zostają dokładnie tam, gdzie były.
+  const hourLabelsStr = hourly.slice(0, n - 1).map((h, i) => {
+    const labelX = xAt(i) + xStep / 2;
+    return `<text x="${labelX.toFixed(1)}" y="${height - 6}" font-size="9" fill="#6B6558" text-anchor="middle">${h.hour}</text>`;
   }).join("");
 
   return `<svg viewBox="0 0 ${width} ${height}" width="100%" preserveAspectRatio="xMidYMid meet">` +
