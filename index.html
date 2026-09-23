@@ -64,14 +64,24 @@
   .value-mid { color: var(--slate); }
   .value-low { color: var(--danger); }
 
-  .hour-breakdown {
-    display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px;
+  .day-metrics { display: flex; align-items: baseline; gap: 10px; }
+
+  .day-pct {
     font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
+    font-size: 1rem; font-weight: 600;
+  }
+
+  .day-chart { margin-top: 10px; }
+  .day-chart svg { display: block; }
+
+  .legend {
+    display: flex; gap: 18px; margin-bottom: 4px;
     font-size: 0.78rem; color: var(--muted);
   }
-  .hour-breakdown .hour-good { color: var(--accent); }
-  .hour-breakdown .hour-mid { color: var(--slate); }
-  .hour-breakdown .hour-low { color: var(--danger); opacity: 0.75; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .swatch { width: 14px; height: 0; border-top: 2.5px solid; display: inline-block; }
+  .legend .swatch.max { border-top-style: dashed; border-color: var(--slate); }
+  .legend .swatch.actual { border-color: var(--accent); }
 
   .status { margin-top: 20px; font-size: 0.85rem; color: var(--muted); }
   .status.error { color: var(--danger); }
@@ -110,18 +120,32 @@
     <button class="icon-btn" id="toggleSettings" aria-label="Ustawienia">⚙</button>
   </header>
 
+  <div class="legend">
+    <span><span class="swatch max"></span>maksimum (bez chmur)</span>
+    <span><span class="swatch actual"></span>prognoza</span>
+  </div>
+
   <div id="results">
     <div class="day-row">
-      <div class="day-header"><span class="day-label">Dziś</span><span class="day-value" id="val-0">–</span></div>
-      <div class="hour-breakdown" id="hours-0"></div>
+      <div class="day-header">
+        <span class="day-label">Dziś</span>
+        <div class="day-metrics"><span class="day-value" id="val-0">–</span><span class="day-pct" id="pct-0"></span></div>
+      </div>
+      <div class="day-chart" id="chart-0"></div>
     </div>
     <div class="day-row">
-      <div class="day-header"><span class="day-label">Jutro</span><span class="day-value" id="val-1">–</span></div>
-      <div class="hour-breakdown" id="hours-1"></div>
+      <div class="day-header">
+        <span class="day-label">Jutro</span>
+        <div class="day-metrics"><span class="day-value" id="val-1">–</span><span class="day-pct" id="pct-1"></span></div>
+      </div>
+      <div class="day-chart" id="chart-1"></div>
     </div>
     <div class="day-row">
-      <div class="day-header"><span class="day-label">Pojutrze</span><span class="day-value" id="val-2">–</span></div>
-      <div class="hour-breakdown" id="hours-2"></div>
+      <div class="day-header">
+        <span class="day-label">Pojutrze</span>
+        <div class="day-metrics"><span class="day-value" id="val-2">–</span><span class="day-pct" id="pct-2"></span></div>
+      </div>
+      <div class="day-chart" id="chart-2"></div>
     </div>
   </div>
 
@@ -210,7 +234,7 @@ function computeDayEstimate(hourlyData, kwp) {
     const { kwh, referenceKwh, percent } = computeHourEstimate(entry.gti, entry.terrestrial, kwp);
     totalKwh += kwh;
     totalReferenceKwh += referenceKwh;
-    hourly.push({ hour: entry.hour, kwh, percent });
+    hourly.push({ hour: entry.hour, kwh, referenceKwh, percent });
   }
 
   const dayPercent = totalReferenceKwh > 0 ? Math.min(100, (totalKwh / totalReferenceKwh) * 100) : null;
@@ -287,16 +311,66 @@ function buildDataByDate(hourlyResponse) {
 function computeWindowHours(azimuth) {
   const centralHourStart = 12 + Math.floor(azimuth / 30);
   const hours = [];
-  for (let h = centralHourStart - 3; h <= centralHourStart + 3; h++) {
+  // Od -3 do +4 (a nie do +3): dane GTI z Open-Meteo to "preceding hour mean",
+  // więc wartość podpisana godziną H to średnia z przedziału (H-1, H].
+  // Żeby pokryć pełne 7 przedziałów godzinowych wokół centrum, potrzeba
+  // 8 takich wartości - stąd asymetryczny zakres pętli.
+  for (let h = centralHourStart - 3; h <= centralHourStart + 4; h++) {
     hours.push(h);
   }
-  return hours; // zawsze 7 godzin, w kolejności rosnącej
+  return hours; // zawsze 8 godzin, w kolejności rosnącej
 }
 
 function formatKwh(kwh) { return kwh.toFixed(1).replace(".", ","); }
 
 function tierClass(percent) {
   return percent >= 66 ? "good" : percent >= 33 ? "mid" : "low";
+}
+
+// Rysuje prosty wykres liniowy (bez żadnej biblioteki) porównujący
+// moc maksymalną (przy naszym uproszczonym "bezchmurnym" odniesieniu)
+// z prognozowaną mocą rzeczywistą, godzina po godzinie, w kW.
+// hourly: tablica {hour, kwh, referenceKwh} - jak zwraca computeDayEstimate.
+function buildDayChartSvg(hourly) {
+  const width = 360, height = 130;
+  const padLeft = 32, padRight = 14, padTop = 8, padBottom = 20;
+  const plotW = width - padLeft - padRight;
+  const plotH = height - padTop - padBottom;
+
+  // Skala Y dobrana do maksimum "referencyjnego" (zawsze >= rzeczywistego),
+  // z niewielkim zapasem u góry, żeby linia nie dotykała krawędzi.
+  const maxVal = Math.max(...hourly.map(h => h.referenceKwh), 0.1);
+  const niceMax = Math.ceil(maxVal * 1.1 * 10) / 10;
+
+  const n = hourly.length;
+
+  // Jeden punkt danych = jedna etykieta, równo rozłożone na całej szerokości.
+  const xStep = n > 1 ? plotW / (n - 1) : 0;
+  const xAt = i => padLeft + i * xStep;
+  const yAt = v => padTop + plotH - (Math.max(0, v) / niceMax) * plotH;
+
+  const pointsFor = key => hourly.map((h, i) => `${xAt(i).toFixed(1)},${yAt(h[key]).toFixed(1)}`).join(" ");
+
+  const gridValues = [0, niceMax / 2, niceMax];
+  const gridLines = gridValues.map(v => {
+    const y = yAt(v).toFixed(1);
+    return `<line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="#E4DFD3" stroke-width="1"/>` +
+           `<text x="${padLeft - 4}" y="${Number(y) + 3}" font-size="9" fill="#6B6558" text-anchor="end">${v.toFixed(1)}</text>`;
+  }).join("");
+
+  // Skrajne etykiety wyrównujemy do wewnątrz (start/end zamiast middle),
+  // żeby nie były przycinane na samej krawędzi wykresu.
+  const hourLabelsStr = hourly.map((h, i) => {
+    const anchor = i === 0 ? "start" : (i === n - 1 ? "end" : "middle");
+    return `<text x="${xAt(i).toFixed(1)}" y="${height - 6}" font-size="9" fill="#6B6558" text-anchor="${anchor}">${h.hour}</text>`;
+  }).join("");
+
+  return `<svg viewBox="0 0 ${width} ${height}" width="100%" preserveAspectRatio="xMidYMid meet">` +
+    gridLines +
+    `<polyline points="${pointsFor("referenceKwh")}" fill="none" stroke="#57687A" stroke-width="2" stroke-dasharray="4 3"/>` +
+    `<polyline points="${pointsFor("kwh")}" fill="none" stroke="#B5760A" stroke-width="2.5"/>` +
+    hourLabelsStr +
+    `</svg>`;
 }
 
 async function runForecast() {
@@ -320,7 +394,8 @@ async function runForecast() {
 
     const today = new Date();
     const dayLabels = ["val-0", "val-1", "val-2"];
-    const hourContainerIds = ["hours-0", "hours-1", "hours-2"];
+    const pctIds = ["pct-0", "pct-1", "pct-2"];
+    const hourContainerIds = ["chart-0", "chart-1", "chart-2"];
 
     for (let dayOffset = 0; dayOffset < 3; dayOffset++) {
       const targetDate = new Date(today);
@@ -334,6 +409,7 @@ async function runForecast() {
       if (Object.keys(dayData).length === 0) {
         el.textContent = "brak danych";
         el.className = "day-value";
+        document.getElementById(pctIds[dayOffset]).textContent = "";
         hoursEl.innerHTML = "";
         continue;
       }
@@ -348,14 +424,15 @@ async function runForecast() {
       }));
 
       const { totalKwh, dayPercent, hourly } = computeDayEstimate(hoursForDay, settings.kwp);
+      const pctEl = document.getElementById(pctIds[dayOffset]);
 
-      el.textContent = `${formatKwh(totalKwh)} kWh · ${Math.round(dayPercent)}%`;
+      el.textContent = `${formatKwh(totalKwh)} kWh`;
       el.className = "day-value value-" + tierClass(dayPercent);
 
-      hoursEl.innerHTML = hourly.map(h => {
-        const cls = "hour-" + tierClass(h.percent);
-        return `<span class="${cls}">${h.hour}-${h.hour + 1}: ${formatKwh(h.kwh)} kWh (${Math.round(h.percent)}%)</span>`;
-      }).join("");
+      pctEl.textContent = `${Math.round(dayPercent)}%`;
+      pctEl.className = "day-pct value-" + tierClass(dayPercent);
+
+      hoursEl.innerHTML = buildDayChartSvg(hourly);
     }
 
     statusEl.textContent = `Zaktualizowano: ${new Date().toLocaleTimeString("pl-PL")}`;
