@@ -178,16 +178,22 @@
 
 <script>
 /* =========================================================================
-   WZÓR SZACOWANIA PRODUKCJI — WERSJA 2 (oparta na GTI z Open-Meteo)
+   WZÓR SZACOWANIA PRODUKCJI — WERSJA 3 (GTI z Open-Meteo + własna pozycja Słońca)
    -------------------------------------------------------------------------
-   W tej wersji NIE liczymy już sami wpływu chmur ani "wagi godziny" —
-   Open-Meteo samo liczy pełną transpozycję promieniowania na nachyloną
-   płaszczyznę (uwzględnia realną pozycję słońca, porę roku, zachmurzenie).
-   Nasza rola ogranicza się do:
-   1) przeliczenia W/m² -> kW przez moc znamionową instalacji (kWp),
-   2) doliczenia strat systemowych (falownik, okablowanie, temperatura),
-   3) zbudowania orientacyjnego "procentu maksimum" względem promieniowania
-      teoretycznego poza atmosferą (patrz niżej — to świadome uproszczenie).
+   Rzeczywistą produkcję (z uwzględnieniem chmur) liczy Open-Meteo za nas
+   (GTI = pełna transpozycja promieniowania na nasz kąt/azymut).
+   Ale punkt odniesienia "ile by to było przy czystym niebie" musimy teraz
+   policzyć SAMI, dla WŁASNEJ geometrii paneli - bo terrestrial_radiation
+   z Open-Meteo jest liczone dla płaszczyzny POZIOMEJ, więc przy niskim
+   słońcu (jesień/zima, godziny brzegowe) systematycznie zaniża to, ile
+   nachylony panel realnie mógłby złapać (straty kosinusowe płaszczyzny
+   poziomej, których nachylony panel unika).
+   Dlatego liczymy własną, uproszczoną astronomię: pozycję Słońca (wysokość,
+   azymut) dla danej godziny i lokalizacji, kąt padania na NASZ panel,
+   i z tego teoretyczne promieniowanie poza atmosferą na naszej płaszczyźnie.
+   Jedna zahardkodowana stała (ATMOSPHERIC_CLEAR_SKY_FACTOR) doszacowuje
+   tylko to, ile z tego przebija czysta atmosfera - to jedyne uproszczenie,
+   jakie zostaje (reszta to ścisła geometria).
    ========================================================================= */
 
 // Współczynnik strat systemowych (Performance Ratio) — typowe realne instalacje
@@ -195,43 +201,120 @@
 // zabrudzenie paneli). Wartość do skorygowania, gdy porównasz z prawdziwym licznikiem.
 const PERFORMANCE_RATIO = 0.80;
 
-// Jaka część promieniowania teoretycznego (poza atmosferą, "terrestrial_radiation")
-// realnie dociera do powierzchni Ziemi w PRAWDZIWIE bezchmurny dzień.
-// To NIE jest ścisła fizyka dla nachylonej płaszczyzny (terrestrial_radiation
-// jest liczone dla płaszczyzny poziomej) — to świadomy, zgrubny skrót,
-// żeby dostać orientacyjny "% dobrego dnia" bez pisania własnej astronomii
-// (obliczania pozycji słońca) tylko po to, żeby mieć punkt odniesienia.
-// Efekt uboczny: przy stromym nachyleniu i niskim słońcu wynik może chwilowo
-// "przebić" 100% — dlatego wynik zawsze przycinamy w dół do 100.
-const CLEAR_SKY_FACTOR = 0.75;
+// Jaka część promieniowania teoretycznego (policzonego przez NAS dla naszej
+// geometrii, poza atmosferą) realnie dociera do ziemi w PRAWDZIWIE bezchmurny
+// dzień. To już tylko przybliżenie ATMOSFERY (rozpraszanie, pochłanianie przez
+// powietrze, parę wodną itd.) - geometria (nachylenie, azymut, pozycja słońca)
+// jest policzona ściśle, więc ta jedna stała ma teraz dużo węższe zadanie
+// niż poprzednio. Typowa wartość dla czystego nieba to ok. 0.7-0.8.
+const ATMOSPHERIC_CLEAR_SKY_FACTOR = 0.75;
+
+function degToRad(deg) { return deg * Math.PI / 180; }
+function radToDeg(rad) { return rad * 180 / Math.PI; }
+
+// Dzień roku (1-366) z daty lokalnej - zwykła arytmetyka kalendarzowa,
+// bez używania obiektu Date (żeby uniknąć niuansów stref czasowych/DST).
+function dayOfYear(year, month, day) {
+  const cumDays = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+  let doy = cumDays[month - 1] + day;
+  const isLeap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  if (isLeap && month > 2) doy += 1;
+  return doy;
+}
+
+// Deklinacja Słońca (kąt między promieniami słonecznymi a płaszczyzną
+// równika) - wzór Coopera, standardowe przybliżenie inżynierskie.
+function solarDeclinationDeg(doy) {
+  return 23.45 * Math.sin(degToRad((360 / 365) * (284 + doy)));
+}
+
+// "Równanie czasu" - niewielka (do ok. ±16 min) poprawka wynikająca z tego,
+// że orbita Ziemi nie jest idealnym okręgiem, a oś nie jest prostopadła
+// do orbity. Standardowe przybliżenie.
+function equationOfTimeMinutes(doy) {
+  const b = degToRad((360 / 365) * (doy - 81));
+  return 9.87 * Math.sin(2 * b) - 7.53 * Math.cos(b) - 1.5 * Math.sin(b);
+}
+
+// Pozycja Słońca (wysokość i azymut, w konwencji Open-Meteo: 0°=południe,
+// -90°=wschód, 90°=zachód) dla danej lokalizacji, dnia roku i godziny
+// zegarowej (czas cywilny, stąd korekta o Twoją strefę czasową i długość
+// geograficzną - "czas słoneczny" różni się od czasu na zegarku).
+function solarPosition(lat, lon, utcOffsetHours, doy, decimalHour) {
+  const standardMeridian = utcOffsetHours * 15; // południk odniesienia dla Twojej strefy
+  const eot = equationOfTimeMinutes(doy);
+  const solarTime = decimalHour + (4 * (lon - standardMeridian) + eot) / 60;
+  const hourAngle = 15 * (solarTime - 12); // stopnie; ujemny rano, dodatni po południu
+
+  const decl = solarDeclinationDeg(doy);
+  const latR = degToRad(lat), declR = degToRad(decl), haR = degToRad(hourAngle);
+
+  const sinElev = Math.sin(latR) * Math.sin(declR) + Math.cos(latR) * Math.cos(declR) * Math.cos(haR);
+  const elevR = Math.asin(Math.max(-1, Math.min(1, sinElev)));
+  const elevationDeg = radToDeg(elevR);
+
+  let cosAz = (Math.sin(declR) - Math.sin(elevR) * Math.sin(latR)) / (Math.cos(elevR) * Math.cos(latR));
+  cosAz = Math.max(-1, Math.min(1, cosAz));
+  const azMagnitude = radToDeg(Math.acos(cosAz)); // 0..180, bez znaku
+  const azimuthDeg = hourAngle < 0 ? -azMagnitude : azMagnitude; // rano ujemny (wschód), po południu dodatni (zachód)
+
+  return { elevationDeg, azimuthDeg };
+}
+
+// Kosinus kąta padania promieni słonecznych na NASZ panel (kąt między
+// wektorem na Słońce a normalną do panelu) - standardowy wzór transpozycji
+// na dowolnie nachyloną i zorientowaną płaszczyznę.
+function cosIncidenceAngle(elevationDeg, sunAzimuthDeg, tilt, panelAzimuth) {
+  const elevR = degToRad(elevationDeg);
+  const tiltR = degToRad(tilt);
+  const azDiffR = degToRad(sunAzimuthDeg - panelAzimuth);
+  return Math.cos(elevR) * Math.sin(tiltR) * Math.cos(azDiffR) + Math.sin(elevR) * Math.cos(tiltR);
+}
+
+// Teoretyczne promieniowanie (poza atmosferą, W/m²) padające na NASZ panel,
+// przy założeniu, że Słońce świeci wprost (brak jakiejkolwiek atmosfery,
+// nie mówiąc już o chmurach). To "surowy" fizyczny sufit - ATMOSPHERIC_CLEAR_SKY_FACTOR
+// doszacowuje dopiero, ile z tego realnie przebija czyste powietrze.
+function maxTiltedIrradiance(doy, lat, lon, utcOffsetHours, decimalHour, tilt, panelAzimuth) {
+  const { elevationDeg, azimuthDeg } = solarPosition(lat, lon, utcOffsetHours, doy, decimalHour);
+  if (elevationDeg <= 0) return 0; // Słońce pod horyzontem
+
+  const cosBeta = cosIncidenceAngle(elevationDeg, azimuthDeg, tilt, panelAzimuth);
+  if (cosBeta <= 0) return 0; // Słońce świeci "zza pleców" panelu
+
+  // Stała słoneczna skorygowana o zmienną w ciągu roku odległość Ziemia-Słońce
+  const eccentricityCorr = 1 + 0.033 * Math.cos(degToRad(360 * doy / 365));
+  const solarConstant = 1367 * eccentricityCorr; // W/m²
+
+  return solarConstant * cosBeta;
+}
 
 // Liczy szacunki dla JEDNEJ godziny.
 // gti: Global Tilted Irradiance z Open-Meteo (W/m²) — już z uwzględnieniem
 //      Twojego kąta nachylenia, azymutu i prognozowanego zachmurzenia.
-// terrestrial: promieniowanie teoretyczne poza atmosferą dla tej godziny
-//      i lokalizacji (W/m², płaszczyzna pozioma) — służy tylko jako punkt
-//      odniesienia do wyliczenia procentu, patrz komentarz przy CLEAR_SKY_FACTOR.
-function computeHourEstimate(gti, terrestrial, kwp) {
+// maxTiltedTOA: teoretyczne promieniowanie na NASZ panel przy czystym niebie,
+//      policzone samodzielnie funkcją maxTiltedIrradiance() - patrz wyżej.
+function computeHourEstimate(gti, maxTiltedTOA, kwp) {
   const gtiClamped = Math.max(0, gti); // GTI potrafi sporadycznie wyjść lekko ujemne - to znany drobny błąd API
 
   const kwh = kwp * (gtiClamped / 1000) * PERFORMANCE_RATIO;
-  const referenceKwh = kwp * (terrestrial * CLEAR_SKY_FACTOR / 1000) * PERFORMANCE_RATIO;
+  const referenceKwh = kwp * (maxTiltedTOA * ATMOSPHERIC_CLEAR_SKY_FACTOR / 1000) * PERFORMANCE_RATIO;
 
   const percent = referenceKwh > 0 ? Math.min(100, (kwh / referenceKwh) * 100) : 0;
 
   return { kwh, referenceKwh, percent };
 }
 
-// Liczy podsumowanie CAŁEGO DNIA na podstawie godzinowych danych GTI/terrestrial.
-// hourlyData: tablica {hour, gti, terrestrial} — TYLKO godziny dzienne
-// (noc jest już odfiltrowana wcześniej, bo terrestrial_radiation = 0 w nocy).
+// Liczy podsumowanie CAŁEGO DNIA na podstawie godzinowych danych.
+// hourlyData: tablica {hour, gti, maxTiltedTOA} - maxTiltedTOA policzone
+// wcześniej naszą własną astronomią (patrz maxTiltedIrradiance()).
 function computeDayEstimate(hourlyData, kwp) {
   let totalKwh = 0;
   let totalReferenceKwh = 0;
   const hourly = [];
 
   for (const entry of hourlyData) {
-    const { kwh, referenceKwh, percent } = computeHourEstimate(entry.gti, entry.terrestrial, kwp);
+    const { kwh, referenceKwh, percent } = computeHourEstimate(entry.gti, entry.maxTiltedTOA, kwp);
     totalKwh += kwh;
     totalReferenceKwh += referenceKwh;
     hourly.push({ hour: entry.hour, kwh, referenceKwh, percent });
@@ -273,17 +356,20 @@ function localDateString(date) {
 }
 
 async function fetchForecast(lat, lon, tilt, azimuth) {
+  // terrestrial_radiation już nie jest potrzebne - punkt odniesienia liczymy
+  // teraz sami (patrz maxTiltedIrradiance). utc_offset_seconds Open-Meteo
+  // zwraca zawsze przy timezone=auto, bez dopisywania go do "hourly".
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}` +
-              `&hourly=global_tilted_irradiance,terrestrial_radiation` +
+              `&hourly=global_tilted_irradiance` +
               `&tilt=${tilt}&azimuth=${azimuth}&forecast_days=3&timezone=auto`;
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Open-Meteo odpowiedziało błędem: ${response.status}`);
   return response.json();
 }
 
-// Buduje mapę: "YYYY-MM-DD" -> { godzina -> {gti, terrestrial} }, dla WSZYSTKICH
-// godzin (bez filtrowania dnia/nocy) — okno godzin, które nas interesują,
-// wyznaczamy osobno funkcją computeWindowHours().
+// Buduje mapę: "YYYY-MM-DD" -> { godzina -> gti }, dla WSZYSTKICH godzin
+// (bez filtrowania dnia/nocy) — okno godzin wyznaczamy osobno,
+// funkcją computeWindowHours().
 function buildDataByDate(hourlyResponse) {
   const byDate = {};
   const times = hourlyResponse.time;
@@ -291,10 +377,7 @@ function buildDataByDate(hourlyResponse) {
     const dateStr = times[i].slice(0, 10);
     const hour = parseInt(times[i].slice(11, 13), 10);
     if (!byDate[dateStr]) byDate[dateStr] = {};
-    byDate[dateStr][hour] = {
-      gti: hourlyResponse.global_tilted_irradiance[i],
-      terrestrial: hourlyResponse.terrestrial_radiation[i]
-    };
+    byDate[dateStr][hour] = hourlyResponse.global_tilted_irradiance[i];
   }
   return byDate;
 }
@@ -395,6 +478,7 @@ async function runForecast() {
     const data = await fetchForecast(settings.lat, settings.lon, settings.tilt, settings.azimuth);
     const byDate = buildDataByDate(data.hourly);
     const windowHours = computeWindowHours(settings.azimuth);
+    const utcOffsetHours = data.utc_offset_seconds / 3600;
 
     const today = new Date();
     const dayLabels = ["val-0", "val-1", "val-2"];
@@ -405,6 +489,7 @@ async function runForecast() {
       const targetDate = new Date(today);
       targetDate.setDate(today.getDate() + dayOffset);
       const dateStr = localDateString(targetDate);
+      const doy = dayOfYear(targetDate.getFullYear(), targetDate.getMonth() + 1, targetDate.getDate());
 
       const dayData = byDate[dateStr] || {};
       const el = document.getElementById(dayLabels[dayOffset]);
@@ -418,13 +503,18 @@ async function runForecast() {
         continue;
       }
 
-      // Dla każdej godziny w wyliczonym oknie bierzemy dane z API, a jeśli
-      // jakaś godzina wypadłaby poza zwróconym zakresem (nie powinno się zdarzyć
-      // przy forecast_days=3), traktujemy ją jako zerową produkcję.
+      // Dla każdej godziny w wyliczonym oknie: GTI bierzemy z API (0, jeśli
+      // jakaś godzina wypadłaby poza zwróconym zakresem - nie powinno się
+      // zdarzyć przy forecast_days=3), a punkt odniesienia (maxTiltedTOA)
+      // liczymy sami dla środka przedziału (H-0.5), bo GTI to "preceding
+      // hour mean" - patrz komentarz przy computeWindowHours.
       const hoursForDay = windowHours.map(h => ({
         hour: h,
-        gti: dayData[h] ? dayData[h].gti : 0,
-        terrestrial: dayData[h] ? dayData[h].terrestrial : 0
+        gti: dayData[h] !== undefined ? dayData[h] : 0,
+        maxTiltedTOA: maxTiltedIrradiance(
+          doy, settings.lat, settings.lon, utcOffsetHours,
+          h - 0.5, settings.tilt, settings.azimuth
+        )
       }));
 
       const { totalKwh, dayPercent, hourly } = computeDayEstimate(hoursForDay, settings.kwp);
