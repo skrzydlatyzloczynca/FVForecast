@@ -253,7 +253,10 @@ function solarPosition(lat, lon, utcOffsetHours, doy, decimalHour) {
   const elevR = Math.asin(Math.max(-1, Math.min(1, sinElev)));
   const elevationDeg = radToDeg(elevR);
 
-  let cosAz = (Math.sin(declR) - Math.sin(elevR) * Math.sin(latR)) / (Math.cos(elevR) * Math.cos(latR));
+  // UWAGA: kolejność w liczniku ma znaczenie - to sin(wysokość)*sin(lat) - sin(deklinacji),
+  // nie odwrotnie (odwrotna kolejność daje wynik przesunięty o 180°, czyli "północ"
+  // zamiast "południe" w środku dnia - dokładnie taki błąd tu wcześniej był).
+  let cosAz = (Math.sin(elevR) * Math.sin(latR) - Math.sin(declR)) / (Math.cos(elevR) * Math.cos(latR));
   cosAz = Math.max(-1, Math.min(1, cosAz));
   const azMagnitude = radToDeg(Math.acos(cosAz)); // 0..180, bez znaku
   const azimuthDeg = hourAngle < 0 ? -azMagnitude : azMagnitude; // rano ujemny (wschód), po południu dodatni (zachód)
